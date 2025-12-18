@@ -1,12 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/layout/Navigation';
 import Footer from './components/layout/Footer';
+import Background from './components/layout/Background';
 import Home from './pages/Home';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-dark-bg">
+      <div className="min-h-screen bg-dark-bg relative selection:bg-accent-primary/30">
+        <Background />
         <Navigation />
         <div className="pt-16">
           <Routes>

@@ -6,7 +6,7 @@ import ReasoningPanel from '../components/ReasoningPanel';
 import MarketConsensus from '../components/MarketConsensus';
 import PriceChart from '../components/PriceChart';
 
-// Mock data for demonstration
+// Mock data (same as before but ensured to be available)
 const mockAnalysisData = {
     AAPL: {
         stock: {
@@ -58,7 +58,13 @@ const mockAnalysisData = {
             { date: 'Nov 15', price: 182.40 },
             { date: 'Nov 22', price: 179.05 },
             { date: 'Nov 29', price: 183.90 },
-            { date: 'Dec 6', price: 185.92 },
+            { date: 'Dec 4', price: 186.40 },
+            { date: 'Dec 11', price: 193.18 },
+            { date: 'Dec 18', price: 195.89 },
+            { date: 'Dec 25', price: 193.05 },
+            { date: 'Jan 1', price: 185.64 },
+            { date: 'Jan 8', price: 185.56 },
+            { date: 'Jan 15', price: 182.68 },
         ]
     },
     NVDA: {
@@ -183,7 +189,7 @@ export default function Home() {
 
             // Smooth scroll to analysis
             setTimeout(() => {
-                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+                window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
             }, 100);
         } else {
             alert(`Analysis not available for ${ticker}. Try AAPL, NVDA, or TSLA.`);
@@ -191,17 +197,40 @@ export default function Home() {
     };
 
     return (
-        <div>
+        <div className="pb-20"> {/* Added padding bottom for space after content */}
             {/* Hero Section */}
             <Hero onAnalyze={handleAnalyze} />
 
             {/* Analysis Dashboard */}
             {showAnalysis && analysisData && (
-                <div className="max-w-7xl mx-auto px-6 py-16">
+                <div id="analysis-section" className="max-w-7xl mx-auto px-6 py-12 animate-slide-up opacity-0" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+
+                    {/* Dashboard Header */}
+                    <div className="mb-8 flex items-end justify-between">
+                        <div>
+                            <h2 className="text-2xl font-bold text-white mb-2">Analysis Report</h2>
+                            <div className="flex items-center space-x-2 text-sm text-gray-400">
+                                <span>Generated just now</span>
+                                <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
+                                <span>Live data</span>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => {
+                                setShowAnalysis(false);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className="text-sm text-accent-primary hover:text-white transition-colors"
+                        >
+                            Start New Analysis
+                        </button>
+                    </div>
+
                     {/* 3-column grid */}
-                    <div className="grid lg:grid-cols-3 gap-6">
-                        {/* Left Panel */}
-                        <div className="space-y-6">
+                    <div className="grid lg:grid-cols-3 gap-6 mb-8">
+                        {/* Left Panel - Overview */}
+                        <div className="space-y-6 lg:col-span-1">
                             <StockOverview data={analysisData.stock} />
                             <SentinelScore
                                 score={analysisData.sentinel.score}
@@ -209,8 +238,8 @@ export default function Home() {
                             />
                         </div>
 
-                        {/* Center Panel */}
-                        <div>
+                        {/* Center Panel - Reasoning */}
+                        <div className="lg:col-span-1">
                             <ReasoningPanel
                                 reasoning={analysisData.reasoning.reasoning}
                                 assumptions={analysisData.reasoning.assumptions}
@@ -218,8 +247,8 @@ export default function Home() {
                             />
                         </div>
 
-                        {/* Right Panel */}
-                        <div>
+                        {/* Right Panel - Consensus */}
+                        <div className="lg:col-span-1">
                             <MarketConsensus
                                 consensus={analysisData.consensus}
                                 divergence={analysisData.divergence}
@@ -227,20 +256,11 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Charts Section */}
-                    <div className="mt-8">
+                    {/* Charts Section - Full Width */}
+                    <div className="w-full">
                         <PriceChart data={analysisData.priceHistory} />
                     </div>
 
-                    {/* Analyze Another Button */}
-                    <div className="mt-12 text-center">
-                        <button
-                            onClick={() => setShowAnalysis(false)}
-                            className="text-accent-blue hover:text-accent-blue-light transition-colors"
-                        >
-                            ← Analyze another ticker
-                        </button>
-                    </div>
                 </div>
             )}
         </div>

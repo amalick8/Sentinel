@@ -1,4 +1,4 @@
-import { TrendingUp, Target, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { TrendingUp, Target, ArrowUpRight, ArrowDownRight, Users } from 'lucide-react';
 import Card from './ui/Card';
 
 export default function MarketConsensus({ consensus, divergence }) {
@@ -6,54 +6,56 @@ export default function MarketConsensus({ consensus, divergence }) {
     const total = buy + hold + sell;
 
     return (
-        <Card className="h-full">
-            <div className="space-y-6">
+        <Card className="h-full flex flex-col">
+            <div className="space-y-8 flex-grow">
                 {/* Header */}
-                <h3 className="text-xl font-semibold flex items-center space-x-2">
-                    <TrendingUp className="text-accent-violet" size={24} />
+                <h3 className="text-lg font-semibold flex items-center space-x-2 text-white">
+                    <div className="p-1.5 rounded-md bg-accent-violet/10 border border-accent-violet/20">
+                        <Users className="text-accent-violet" size={18} />
+                    </div>
                     <span>Market Consensus</span>
                 </h3>
 
                 {/* Analyst Ratings */}
                 <div>
-                    <h4 className="text-sm font-medium text-gray-400 mb-3">Analyst Ratings</h4>
+                    <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Analyst Ratings</h4>
 
                     {/* Rating bars */}
-                    <div className="space-y-3">
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span className="text-sentiment-bullish">Buy</span>
-                                <span className="text-gray-400">{buy}</span>
+                    <div className="space-y-4">
+                        <div className="group">
+                            <div className="flex justify-between text-sm mb-2">
+                                <span className="text-gray-300 font-medium group-hover:text-sentiment-bullish transition-colors">Buy</span>
+                                <span className="text-gray-400 group-hover:text-white transition-colors">{buy}</span>
                             </div>
-                            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-sentiment-bullish rounded-full transition-all duration-500"
+                                    className="h-full bg-sentiment-bullish rounded-full opacity-80 shadow-[0_0_8px_rgba(16,185,129,0.3)] group-hover:opacity-100 transition-all duration-500"
                                     style={{ width: `${(buy / total) * 100}%` }}
                                 ></div>
                             </div>
                         </div>
 
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span className="text-sentiment-neutral">Hold</span>
-                                <span className="text-gray-400">{hold}</span>
+                        <div className="group">
+                            <div className="flex justify-between text-sm mb-2">
+                                <span className="text-gray-300 font-medium group-hover:text-sentiment-neutral transition-colors">Hold</span>
+                                <span className="text-gray-400 group-hover:text-white transition-colors">{hold}</span>
                             </div>
-                            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-sentiment-neutral rounded-full transition-all duration-500"
+                                    className="h-full bg-sentiment-neutral rounded-full opacity-80 shadow-[0_0_8px_rgba(148,163,184,0.3)] group-hover:opacity-100 transition-all duration-500"
                                     style={{ width: `${(hold / total) * 100}%` }}
                                 ></div>
                             </div>
                         </div>
 
-                        <div>
-                            <div className="flex justify-between text-sm mb-1">
-                                <span className="text-red-500">Sell</span>
-                                <span className="text-gray-400">{sell}</span>
+                        <div className="group">
+                            <div className="flex justify-between text-sm mb-2">
+                                <span className="text-gray-300 font-medium group-hover:text-red-400 transition-colors">Sell</span>
+                                <span className="text-gray-400 group-hover:text-white transition-colors">{sell}</span>
                             </div>
-                            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-red-500 rounded-full transition-all duration-500"
+                                    className="h-full bg-red-500 rounded-full opacity-80 shadow-[0_0_8px_rgba(239,68,68,0.3)] group-hover:opacity-100 transition-all duration-500"
                                     style={{ width: `${(sell / total) * 100}%` }}
                                 ></div>
                             </div>
@@ -61,39 +63,31 @@ export default function MarketConsensus({ consensus, divergence }) {
                     </div>
                 </div>
 
-                {/* Average Price Target */}
-                <div className="pt-6 border-t border-white/10">
-                    <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400 flex items-center space-x-2">
-                            <Target size={16} />
-                            <span>Avg. Price Target</span>
-                        </span>
-                        <span className="text-lg font-semibold">${avgPriceTarget}</span>
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-4 py-6 border-t border-b border-white/5">
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Target</p>
+                        <p className="text-xl font-bold text-white">${avgPriceTarget}</p>
                     </div>
-                </div>
-
-                {/* Sentiment Trend */}
-                <div className="pt-6 border-t border-white/10">
-                    <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400">Recent Sentiment</span>
-                        <span className={`text-sm font-medium ${sentiment === 'Improving' ? 'text-sentiment-bullish' : 'text-gray-400'
-                            }`}>
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Sentiment</p>
+                        <p className={`text-xl font-bold ${sentiment === 'Improving' ? 'text-sentiment-bullish' : 'text-gray-300'}`}>
                             {sentiment}
-                        </span>
+                        </p>
                     </div>
                 </div>
 
                 {/* Divergence Indicator */}
-                <div className="pt-6 border-t border-white/10 glass-hover p-4 rounded-lg">
+                <div className="bg-gradient-to-br from-dark-surface to-dark-elevated rounded-lg p-4 border border-white/5 shadow-inner">
                     <div className="flex items-start space-x-3">
-                        <div className={`mt-1 ${divergence.direction === 'bullish' ? 'text-sentiment-bullish' : 'text-sentiment-cautious'}`}>
-                            {divergence.direction === 'bullish' ? <ArrowUpRight size={20} /> : <ArrowDownRight size={20} />}
+                        <div className={`mt-0.5 p-1 rounded-full ${divergence.direction === 'bullish' ? 'bg-sentiment-bullish/10 text-sentiment-bullish' : 'bg-sentiment-cautious/10 text-sentiment-cautious'}`}>
+                            {divergence.direction === 'bullish' ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
                         </div>
                         <div>
-                            <p className="font-medium text-white mb-1">
-                                Sentinel is {divergence.direction === 'bullish' ? 'more bullish' : 'more cautious'} than consensus
+                            <p className="font-medium text-white text-sm mb-1">
+                                Sentinel is {divergence.direction === 'bullish' ? 'more bullish' : 'more cautious'} than street
                             </p>
-                            <p className="text-sm text-gray-400">{divergence.reason}</p>
+                            <p className="text-xs text-gray-400 leading-relaxed">{divergence.reason}</p>
                         </div>
                     </div>
                 </div>

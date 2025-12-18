@@ -5,17 +5,23 @@ export default function Input({
     onChange,
     className = '',
     icon: Icon,
-    large = false
+    large = false,
+    autoFocus = false,
+    onKeyPress
 }) {
     const sizeClass = large
-        ? 'text-2xl py-5 px-6'
-        : 'text-base py-3 px-4';
+        ? 'text-lg py-4 px-6 h-14'
+        : 'text-sm py-2.5 px-4 h-10';
 
     return (
-        <div className="relative">
+        <div className="relative group">
             {Icon && (
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                    <Icon size={large ? 28 : 20} />
+                <div className={`
+          absolute left-4 top-1/2 -translate-y-1/2
+          text-gray-500 group-focus-within:text-accent-primary
+          transition-colors duration-300
+        `}>
+                    <Icon size={large ? 20 : 16} />
                 </div>
             )}
             <input
@@ -23,12 +29,12 @@ export default function Input({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                onKeyPress={onKeyPress}
+                autoFocus={autoFocus}
                 className={`
-          w-full ${sizeClass} ${Icon ? (large ? 'pl-14' : 'pl-12') : ''}
-          glass rounded-xl
-          text-white placeholder-gray-500
-          focus:outline-none focus:ring-2 focus:ring-accent-blue/50
-          transition-all duration-300
+          w-full input-premium
+          ${sizeClass}
+          ${Icon ? 'pl-11' : ''}
           ${className}
         `}
             />
