@@ -7,6 +7,17 @@
 @layer base {
   html {
     font-family: Inter, system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: theme('colors.dark.background');
+    /* Fallback */
+    background: linear-gradient(to bottom, theme('colors.dark.bgGradientStart'), theme('colors.dark.bgGradientEnd'));
+    color: theme('colors.dark.text');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
   }
 
   code {
