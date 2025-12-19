@@ -1,16 +1,19 @@
-export default function Badge({ children, variant = 'neutral', className = '' }) {
+export default function Badge({ children, variant = 'neutral' }) {
     const variants = {
-        bullish: 'bg-sentiment-bullish/10 text-sentiment-bullish border-sentiment-bullish/20',
-        neutral: 'bg-sentiment-neutral/10 text-sentiment-neutral border-sentiment-neutral/20',
-        cautious: 'bg-sentiment-cautious/10 text-sentiment-cautious border-sentiment-cautious/20',
-        premium: 'bg-accent-primary/10 text-accent-primary border-accent-primary/20',
+        bullish: 'bg-green-500/10 text-green-400 border-green-500/20',
+        neutral: 'bg-dark-border text-dark-muted border-dark-border',
+        bearish: 'bg-red-500/10 text-red-400 border-red-500/20',
+        blue: 'bg-accent-blue/10 text-accent-blue border-accent-blue/20',
     };
 
     return (
         <span className={`
-      inline-flex items-center px-2.5 py-0.5
-      rounded-md text-xs font-medium border
-      ${variants[variant]} ${className}
+      ${variants[variant]} 
+      inline-flex items-center 
+      px-2 py-0.5
+      rounded 
+      text-xs font-mono
+      border
     `}>
             {children}
         </span>

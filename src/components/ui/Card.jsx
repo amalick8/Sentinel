@@ -1,13 +1,14 @@
-export default function Card({ children, className = '', variant = 'default', hover = false }) {
-    const variants = {
-        default: 'glass',
-        bordered: 'glass border-2 border-accent-blue/20',
-    };
-
-    const hoverClass = hover ? 'glass-hover' : '';
-
+export default function Card({ children, className = '' }) {
     return (
-        <div className={`${variants[variant]} ${hoverClass} rounded-xl p-6 ${className}`}>
+        <div className={`
+      bg-dark-surface 
+      border border-dark-border 
+      rounded-xl 
+      p-6 
+      transition-transform duration-200 ease-out
+      hover:-translate-y-0.5
+      ${className}
+    `}>
             {children}
         </div>
     );
