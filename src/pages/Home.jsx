@@ -1,72 +1,71 @@
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Hero from '../components/Hero';
+import SignalSnapshot from '../components/SignalSnapshot';
+import AnalysisLog from '../components/AnalysisLog';
+import ChartSection from '../components/ChartSection';
 import Card from '../components/ui/Card';
-import Badge from '../components/ui/Badge';
-import ReasoningPanel from '../components/ReasoningPanel';
 
 export default function Home() {
-    const signalData = {
-        score: 87,
-        risk: 'Medium',
-        consensus: 'Bullish'
-    };
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
 
-    const reasoningPoints = [
-        "Revenue growth outpaces sector average by 15% (YoY)",
-        "Operating margins expanded to 32% despite supply chain headwinds",
-        "Insider buying activity detected in Q3 (CEO + CFO)",
-        "Technical indicators suggest consolidation above 200-day MA"
-    ];
+    const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
     return (
-        <div className="pb-24">
+        <div ref={containerRef} className="relative min-h-screen overflow-hidden selection:bg-brand-blue/30 selection:text-white pb-20">
+            {/* Parallax Background Elements */}
+            <motion.div style={{ y: y1 }} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40">
+                <div className="absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-indigo-900/20 rounded-full blur-[120px]" />
+            </motion.div>
+            <motion.div style={{ y: y2 }} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
+                <div className="absolute top-[40%] left-[60%] w-[300px] h-[300px] bg-brand-cyan/10 rounded-full blur-[80px]" />
+            </motion.div>
+
             <Hero onAnalyze={(ticker) => console.log(ticker)} />
 
-            <div className="max-w-5xl mx-auto px-6 space-y-8">
-                {/* Signal Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Card>
-                        <div className="text-dark-muted text-sm font-medium mb-2">Sentinel Score</div>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-semibold text-dark-text">{signalData.score}</span>
-                            <span className="text-dark-muted">/100</span>
-                        </div>
-                        <div className="mt-4">
-                            <Badge variant="blue">Strong Signal</Badge>
-                        </div>
-                    </Card>
+            <div className="max-w-6xl mx-auto px-6 space-y-8 relative z-10">
+                {/* Signal Snapshot Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                    <SignalSnapshot />
+                </motion.div>
 
-                    <Card>
-                        <div className="text-dark-muted text-sm font-medium mb-2">Risk Profile</div>
-                        <div className="text-2xl font-semibold text-dark-text mb-4 text-yellow-500">{signalData.risk}</div>
-                        <div className="h-1.5 w-full bg-dark-border rounded-full overflow-hidden">
-                            <div className="h-full bg-yellow-500/80 w-[60%] rounded-full" />
-                        </div>
-                        <div className="mt-3 text-xs text-dark-muted">Volatile shifts expected</div>
-                    </Card>
-
-                    <Card>
-                        <div className="text-dark-muted text-sm font-medium mb-2">Market Consensus</div>
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-2xl font-semibold text-dark-text">{signalData.consensus}</span>
-                            <Badge variant="bullish">Buy</Badge>
-                        </div>
-                        <div className="flex gap-1 h-8 items-end">
-                            <div className="bg-green-500/20 h-full w-1/2 rounded-sm" />
-                            <div className="bg-dark-border h-1/3 w-1/4 rounded-sm" />
-                            <div className="bg-red-500/20 h-1/6 w-1/4 rounded-sm" />
-                        </div>
-                    </Card>
-                </div>
-
-                {/* Reasoning Panel */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 h-full">
-                        <ReasoningPanel items={reasoningPoints} />
+                {/* Analysis & Chart Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-20">
+                    {/* Analysis Log - Terminal Style */}
+                    <div className="lg:col-span-4 h-full min-h-[400px]">
+                        <motion.div
+                            className="h-full"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                        >
+                            <AnalysisLog />
+                        </motion.div>
                     </div>
-                    <div className="lg:col-span-1">
-                        <Card className="h-full min-h-[200px] flex items-center justify-center text-dark-muted text-sm border-dashed">
-                            Chart Placeholder
-                        </Card>
+
+                    {/* Chart Section - Visual Richness */}
+                    <div className="lg:col-span-8 h-full min-h-[400px]">
+                        <motion.div
+                            className="h-full"
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                        >
+                            <ChartSection />
+                        </motion.div>
                     </div>
                 </div>
             </div>
